@@ -9,7 +9,7 @@ resource "aws_lambda_function" "scale_up" {
   handler                        = "index.scaleUp"
   runtime                        = "nodejs14.x"
   timeout                        = var.lambda_timeout_scale_up
-  reserved_concurrent_executions = 1
+  reserved_concurrent_executions = 10
   tags                           = local.tags
 
   environment {
@@ -25,6 +25,7 @@ resource "aws_lambda_function" "scale_up" {
       SUBNET_IDS                           = join(",", var.subnet_ids)
       PARAMETER_GITHUB_APP_ID_NAME         = var.github_app_parameters.id.name
       PARAMETER_GITHUB_APP_KEY_BASE64_NAME = var.github_app_parameters.key_base64.name
+      ENABLE_EPHEMERAL_RUNNERS             = var.enable_ephemeral_runners
     }
   }
 
