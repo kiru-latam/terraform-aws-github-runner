@@ -1,11 +1,12 @@
 provider "aws" {
-  region = local.aws_region
-
-  // If you use roles with specific permissions please add your role
-  // assume_role {
-  //   role_arn = "arn:aws:iam::123456789012:role/MyAdminRole"
-  // }
+  region = var.aws_region
 }
 
-provider "random" {
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 3.39"
+    }
+  }
 }

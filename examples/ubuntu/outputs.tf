@@ -9,4 +9,6 @@ output "webhook" {
     secret   = random_password.random.result
     endpoint = module.runners.webhook.endpoint
   }
+  sensitive = true
 }
+

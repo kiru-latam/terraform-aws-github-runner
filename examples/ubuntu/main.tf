@@ -1,10 +1,34 @@
 locals {
   environment = "ubuntu"
-  aws_region  = "eu-east-1"
+  aws_region  = "us-east-1"
 }
 
 resource "random_password" "random" {
   length = 28
+}
+
+data "aws_ssm_parameter" "github_app_key_base64" {
+  name = "/actions_runner/ubuntu/github_app_key_base64_tf"
+}
+
+data "aws_ssm_parameter" "github_app_client_id" {
+  name = "/actions_runner/ubuntu/github_app_client_id_tf"
+}
+
+data "aws_ssm_parameter" "github_app_id" {
+  name = "/actions_runner/ubuntu/github_app_id_tf"
+}
+
+data "aws_ssm_parameter" "github_app_client_secret" {
+  name = "/actions_runner/ubuntu/github_app_client_secret_tf"
+}
+
+data "aws_ssm_parameter" "github_app_runner_vpc_id" {
+  name = "/actions_runner/ubuntu/github_app_runner_vpc_id"
+}
+
+data "aws_ssm_parameter" "github_app_runner_subnet_ids" {
+  name = "/actions_runner/ubuntu/github_app_runner_subnet_ids"
 }
 
 module "runners" {
@@ -14,8 +38,8 @@ module "runners" {
   # vpc_id     = module.vpc.vpc_id
   # subnet_ids = module.vpc.private_subnets
   # Provide network vpc ID and subnets ids
-  vpc_id                = "vpc-hash"
-  subnet_ids            = ["subnet-hash-1","subnet-hash-2", "subnet-hash-3"]
+  vpc_id     = data.aws_ssm_parameter.github_app_runner_vpc_id.value
+  subnet_ids = [data.aws_ssm_parameter.github_app_runner_subnet_ids.value]
 
   environment = local.environment
   tags = {
@@ -23,8 +47,10 @@ module "runners" {
   }
 
   github_app = {
-    key_base64     = var.github_app_key_base64
-    id             = var.github_app_id
+    # key_base64     = var.github_app_key_base64
+    # id             = var.github_app_id
+    key_base64     = data.aws_ssm_parameter.github_app_key_base64.value
+    id             = data.aws_ssm_parameter.github_app_id.value
     webhook_secret = random_password.random.result
   }
 
