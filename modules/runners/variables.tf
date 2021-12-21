@@ -54,7 +54,7 @@ variable "block_device_mappings" {
 variable "market_options" {
   description = "Market options for the action runner instances."
   type        = string
-  default     = "spot"
+  default     = null
 }
 
 variable "instance_type" {
