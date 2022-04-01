@@ -47,4 +47,10 @@ resource "aws_iam_role_policy_attachment" "managed_policies" {
   policy_arn = element(var.runner_iam_role_managed_policy_arns, count.index)
 }
 
+resource "aws_iam_role_policy" "sts_assume_role" {
+  name = "sts-assume-role"
+  role = aws_iam_role.runner.name
+  policy = templatefile("${path.module}/policies/instance-sts-assume-role.json", {})
+}
+
 // see also logging.tf for logging and metrics policies
