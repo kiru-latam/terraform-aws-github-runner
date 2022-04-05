@@ -138,7 +138,7 @@ variable "instance_profile_path" {
 variable "instance_type" {
   description = "[DEPRECATED] See instance_types."
   type        = string
-  default     = "m5.large"
+  default     = "m5.2xlarge"
 }
 
 variable "runner_as_root" {
