@@ -58,7 +58,7 @@ module "runners" {
   # Let the module manage the service linked role
   # create_service_linked_role_spot = true
 
-  instance_types = ["m5.xlarge", "c5.large"]
+  instance_types = ["m5.2xlarge", "c5.large"]
 
   # override delay of events in seconds
   delay_webhook_event = 5
